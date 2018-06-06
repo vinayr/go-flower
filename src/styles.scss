@@ -1,0 +1,27 @@
+$navbar-height: 3.25rem;
+
+.columns {
+  &.is-fullheight {
+    min-height: calc(100vh - #{$navbar-height});
+    max-height: calc(100vh - #{$navbar-height});
+    height: calc(100vh - #{$navbar-height});
+    display: flex;
+    flex-direction: row;
+    // justify-content: stretch;
+    margin-top: 0;
+    .column {
+      overflow-y: auto;
+    }
+  }
+}
+
+.notification {
+  &.is-fixed-top {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    overflow:hidden;
+    z-index: 31;
+    text-align: center;
+  }
+}
