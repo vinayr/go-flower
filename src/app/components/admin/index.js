@@ -1,31 +1,17 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import moment from "moment";
+import { formatTime } from "../../utils";
 import { fetchUsers } from "../../actions";
-import { getUser, getUsers } from "../../selectors";
+import { getUsers } from "../../selectors";
 
 class Admin extends Component {
   componentDidMount() {
-    if (!this.props.user.isAdmin) return;
     this.props.dispatch(fetchUsers());
   }
 
-  formatTime = time => {
-    const f = "YYYY-MM-DD HH:mm A";
-    return moment(time).format(f);
-  };
-
-  handleClick = id => {
-    console.log("clicked", id);
-  };
-
   render() {
-    const { user, users } = this.props;
-
-    if (!user.isAdmin) {
-      return <div className="columns is-fullheight is-centered is-vcentered">Unauthorized</div>;
-    }
+    const { users } = this.props;
 
     return (
       <div className="columns is-fullheight is-centered">
@@ -46,8 +32,8 @@ class Admin extends Component {
                     <Link to={`/admin/users/${user.id}`}>{user.id}</Link>
                   </td>
                   <td>{user.username}</td>
-                  <td>{this.formatTime(user.createdAt)}</td>
-                  <td>{this.formatTime(user.updatedAt)}</td>
+                  <td>{formatTime(user.createdAt)}</td>
+                  <td>{formatTime(user.updatedAt)}</td>
                 </tr>
               ))}
             </tbody>
@@ -59,6 +45,5 @@ class Admin extends Component {
 }
 
 export default connect(state => ({
-  user: getUser(state),
   users: getUsers(state)
 }))(Admin);

@@ -23,4 +23,5 @@ export default function auth(state = initialState, action) {
 
 export const isSigningIn = state => state.signingIn;
 export const isSignedIn = state => state.signedIn;
+export const isAdmin = state => state.user.isAdmin;
 export const getUser = state => state.user;

@@ -12,6 +12,7 @@ const noti = state => state.noti;
 // auth
 export const isSigningIn = createSelector(auth, fromAuth.isSigningIn);
 export const isSignedIn = createSelector(auth, fromAuth.isSignedIn);
+export const isAdmin = createSelector(auth, fromAuth.isAdmin);
 export const getUser = createSelector(auth, fromAuth.getUser);
 
 // admin

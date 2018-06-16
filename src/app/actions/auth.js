@@ -56,7 +56,7 @@ const tokenExists = () => {
   return true;
 };
 
-export const fetchUser = () => async dispatch => {
+export const fetchProfile = () => async dispatch => {
   const user = await api.fetchProfile();
   dispatch(addUser(user));
 };
@@ -80,7 +80,7 @@ export const signin = user => async dispatch => {
   try {
     const data = await api.signin(user);
     saveToken(data.token);
-    await dispatch(fetchUser());
+    await dispatch(fetchProfile());
     dispatch(signedIn());
   } catch (err) {
     dispatch(notifyError("Invalid username or password"));
@@ -95,9 +95,10 @@ export const signout = () => dispatch => {
 
 export const authenticate = () => async dispatch => {
   if (tokenExists()) {
-    await dispatch(fetchUser());
+    await dispatch(fetchProfile());
     dispatch(signedIn());
   } else {
     dispatch(signedOut());
   }
+  Promise.resolve();
 };

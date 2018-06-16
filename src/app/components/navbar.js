@@ -44,7 +44,7 @@ class NavBar extends Component {
         <div id="navbarMenu" className={`navbar-menu ${menuActive && "is-active"}`} onClick={this.handleMenu}>
           {signedIn ? (
             <div className="navbar-end">
-              <Link className="navbar-item" to="profile">
+              <Link className="navbar-item" to="/profile">
                 Profile
               </Link>
               <a className="navbar-item" onClick={this.handleSignout}>
@@ -53,7 +53,7 @@ class NavBar extends Component {
             </div>
           ) : (
             <div className="navbar-end">
-              <Link className="navbar-item" to="signin">
+              <Link className="navbar-item" to="/signin">
                 Sign In
               </Link>
             </div>

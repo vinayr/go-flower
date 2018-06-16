@@ -18,6 +18,7 @@ api.signin = params => axios.post(`${baseURL}/signin`, params).then(res => res.d
 
 api.refreshToken = () => _axios.get(`/refresh_token`);
 api.fetchUsers = () => _axios.get(`/admin/users`);
-api.fetchProfile = () => _axios.get(`/users/me`);
+api.fetchUser = id => _axios.get(`/admin/users/${id}`);
+api.fetchProfile = () => _axios.get(`/profile`);
 
 export default api;

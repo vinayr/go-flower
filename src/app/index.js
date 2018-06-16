@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom";
 import store from "./store";
 import { authenticate } from "./actions";
-import { isSignedIn } from "./selectors";
+import { isSignedIn, isAdmin } from "./selectors";
 
 import Home from "./components/home";
 import Signup from "./components/signup";
@@ -13,6 +13,7 @@ import Admin from "./components/admin";
 import User from "./components/admin/user";
 import Notification from "./components/notification";
 import NavBar from "./components/navbar";
+import NotFound from "./components/notfound";
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -27,12 +28,21 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
   />
 );
 
+const AdminRoute = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={props => (isAdmin(store.getState()) ? <Component {...props} /> : <NotFound />)} />
+);
+
 export default class App extends Component {
-  componentDidMount() {
-    store.dispatch(authenticate());
+  state = { loading: true };
+
+  async componentDidMount() {
+    await store.dispatch(authenticate());
+    this.setState({ loading: false });
   }
 
   render() {
+    if (this.state.loading) return null;
+
     return (
       <Provider store={store}>
         <Router>
@@ -40,13 +50,13 @@ export default class App extends Component {
             <Notification />
             <NavBar />
             <Switch>
-              <PrivateRoute path="/profile" exact component={Profile} />
-              <PrivateRoute path="/admin" exact component={Admin} />
-              <PrivateRoute path="/admin/users/:id" component={User} />
               <Route path="/" exact component={Home} />
               <Route path="/signup" exact component={Signup} />
               <Route path="/signin" exact component={Signin} />
-              <Route render={() => <div>Not Found</div>} />
+              <PrivateRoute path="/profile" exact component={Profile} />
+              <AdminRoute path="/admin" exact component={Admin} />
+              <AdminRoute path="/admin/users/:id" exact component={User} />
+              <Route component={NotFound} />
             </Switch>
           </div>
         </Router>
