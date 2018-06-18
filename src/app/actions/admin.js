@@ -19,3 +19,14 @@ export const fetchUser = id => async dispatch => {
     }
   }
 };
+
+export const deleteUser = id => async dispatch => {
+  try {
+    await api.deleteUser(id);
+    dispatch(fetchUsers());
+  } catch (err) {
+    if (err.response.status === 404) {
+      dispatch(notifyError("Invalid user id"));
+    }
+  }
+};
