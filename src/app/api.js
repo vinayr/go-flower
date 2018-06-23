@@ -20,6 +20,7 @@ api.refreshToken = () => _axios.get(`/refresh_token`);
 api.fetchUsers = () => _axios.get(`/admin/users`);
 api.fetchUser = id => _axios.get(`/admin/users/${id}`);
 api.deleteUser = id => _axios.delete(`/admin/users/${id}`);
+api.updateUser = params => _axios.put(`/update`, params);
 api.fetchProfile = () => _axios.get(`/profile`);
 
 export default api;

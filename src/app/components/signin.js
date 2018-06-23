@@ -17,12 +17,13 @@ class Signin extends Component {
 
   handleSignin = e => {
     e.preventDefault();
+    const { dispatch } = this.props;
     const user = {
       username: this.email.current.value,
       password: this.password.current.value
     };
     console.log("signin user", user);
-    this.props.dispatch(signin(user));
+    dispatch(signin(user));
   };
 
   gotoSignup = () => {

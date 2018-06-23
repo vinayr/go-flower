@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter, Redirect } from "react-router-dom";
-import { signup, notifyError } from "../actions";
+import { signup } from "../actions";
 import { isSignedIn } from "../selectors";
 
 class Signup extends Component {
@@ -12,18 +12,15 @@ class Signup extends Component {
   handleSignup = async e => {
     e.preventDefault();
     const { dispatch, history } = this.props;
-    const username = this.email.current.value;
-    const password = this.password.current.value;
-    if (!username || !password) {
-      dispatch(notifyError("Username and Password cannot be empty"));
-      return;
-    }
-    const user = { username, password };
+    const user = {
+      username: this.email.current.value,
+      password: this.password.current.value
+    };
     console.log("signup user", user);
     this.setState({ signingUp: true });
-    const res = await dispatch(signup(user));
+    const success = await dispatch(signup(user));
     this.setState({ signingUp: false });
-    if (!res) return;
+    if (!success) return;
     history.replace("/signin");
   };
 

@@ -1,6 +1,6 @@
 import C from "../constants";
 import api from "../api";
-import { notifyError } from "./noti";
+import { notifySuccess, notifyError } from "./noti";
 
 const signingIn = () => ({ type: C.SIGNING_IN });
 const signedIn = () => ({ type: C.SIGNED_IN });
@@ -61,7 +61,29 @@ export const fetchProfile = () => async dispatch => {
   dispatch(addUser(user));
 };
 
+export const updateUser = params => async dispatch => {
+  if (!params.username) {
+    dispatch(notifyError("Username cannot be empty"));
+    return false;
+  }
+
+  try {
+    await api.updateUser(params);
+    dispatch(notifySuccess("Profile successfully updated. Login again to continue."));
+    dispatch(signout());
+    return true;
+  } catch (err) {
+    dispatch(notifyError("Profile update failed"));
+    return false;
+  }
+};
+
 export const signup = user => async dispatch => {
+  if (!user.username || !user.password) {
+    dispatch(notifyError("Username and Password cannot be empty"));
+    return false;
+  }
+
   try {
     await api.signup(user);
     return true;
@@ -69,13 +91,18 @@ export const signup = user => async dispatch => {
     if (err.response.status === 409) {
       dispatch(notifyError(user.username + " already exists"));
     } else {
-      dispatch(notifyError("signup error" + err));
+      dispatch(notifyError("Signup error" + err));
     }
     return false;
   }
 };
 
 export const signin = user => async dispatch => {
+  if (!user.username || !user.password) {
+    dispatch(notifyError("Username and Password cannot be empty"));
+    return;
+  }
+
   dispatch(signingIn());
   try {
     const data = await api.signin(user);
